@@ -1,4 +1,5 @@
 const score = document.querySelector('.score');
+const speed = document.querySelector('.speed');
 const start = document.querySelector('.start');
 const gameArea = document.querySelector('.game_area');
 const car = document.createElement('div');
@@ -72,6 +73,7 @@ const playGame = () => {
 	if (settings.start) {
 		settings.score += Math.floor(settings.speed);
 		score.innerHTML = 'ОЧКИ<br>' + settings.score;
+		speed.innerHTML = '<br>Скорость<br>' + Math.floor(settings.speed);
 		if (keys.ArrowLeft && settings.x > 0) settings.x -= settings.speed;
 		if (keys.ArrowRight && settings.x < (gameArea.offsetWidth - car.offsetWidth)) settings.x += settings.speed;
 		if (keys.ArrowUp && settings.y > 0) settings.y -= settings.speed;
@@ -101,6 +103,7 @@ const moveRoad = () => {
 const setScoreToStorage = () => {
 	if (settings.score > localStorage.getItem('score')) {
 		score.innerHTML = 'Вы набрали ' + settings.score + 'очков! <br>Это рекорд!';
+		speed.innerHTML = '';
 		localStorage.setItem('score', settings.score);
 	}
 };
