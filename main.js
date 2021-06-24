@@ -4,6 +4,7 @@ const gameArea = document.querySelector('.game_area');
 const car = document.createElement('div');
 
 car.classList.add('car');
+let audioTrack = new Audio('');
 
 const keys = {
 	ArrowUp: false,
@@ -15,7 +16,7 @@ const keys = {
 const settings = {
 	start: false,
 	score: 0,
-	speed: 4,
+	speed: 2,
 	traffic: 3,
 };
 
@@ -23,10 +24,17 @@ getQuantityElements = (heightElement) => {
 	return document.documentElement.clientHeight / heightElement + 1;
 };
 
+const playAudio = (path) => {
+	audioTrack.pause();
+	audioTrack = new Audio(path);
+	audioTrack.addEventListener("canplaythrough", () => audioTrack.play());
+};
+
+
 const startGame = () => {
 	start.classList.add('hide');
 	gameArea.innerHTML = '';
-
+	playAudio('./audio/2.mp3');
 	for (let i = 0; i < getQuantityElements(100); i++) {
 		const line = document.createElement('div');
 		line.classList.add('line');
@@ -62,7 +70,7 @@ const playGame = () => {
 	moveRoad();
 	moveEnemy();
 	if (settings.start) {
-		settings.score += settings.speed;
+		settings.score += Math.floor(settings.speed);
 		score.innerHTML = 'ОЧКИ<br>' + settings.score;
 		if (keys.ArrowLeft && settings.x > 0) settings.x -= settings.speed;
 		if (keys.ArrowRight && settings.x < (gameArea.offsetWidth - car.offsetWidth)) settings.x += settings.speed;
@@ -73,6 +81,11 @@ const playGame = () => {
 		requestAnimationFrame(playGame);
 	}
 };
+
+setInterval(() => {
+	settings.speed += 0.1;
+}, 1000);
+
 
 const moveRoad = () => {
 	let lines = document.querySelectorAll('.line');
@@ -85,6 +98,13 @@ const moveRoad = () => {
 	});
 };
 
+const setScoreToStorage = () => {
+	if (settings.score > localStorage.getItem('score')) {
+		score.innerHTML = 'Вы набрали ' + settings.score + 'очков! <br>Это рекорд!';
+		localStorage.setItem('score', settings.score);
+	}
+};
+
 const moveEnemy = () => {
 	let enemy = document.querySelectorAll('.enemy');
 	enemy.forEach(item => {
@@ -95,10 +115,12 @@ const moveEnemy = () => {
 			carRect.right >= enemyRect.left &&
 			carRect.left <= enemyRect.right &&
 			carRect.bottom >= enemyRect.top) {
+
 			settings.start = false;
-			console.warn('ДТП');
 			start.classList.remove('hide');
-			start.style.top = score.offsetHeight;
+			start.style.top = score.offsetHeight + 'px';
+			setScoreToStorage();
+
 		}
 		item.y += settings.speed / 2;
 		item.style.top = item.y + 'px';
@@ -119,6 +141,9 @@ const stopRun = (event) => {
 	event.preventDefault();
 	keys[event.key] = false;
 };
+
+
+playAudio('./audio/1.mp3');
 
 start.addEventListener('click', startGame);
 document.addEventListener('keydown', startRun);
