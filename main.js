@@ -6,6 +6,7 @@ const car = document.createElement('div');
 
 car.classList.add('car');
 let audioTrack = new Audio('');
+const MAX_ENEMY = 8
 
 const keys = {
 	ArrowUp: false,
@@ -18,12 +19,14 @@ const settings = {
 	start: false,
 	score: 0,
 	speed: 2,
-	traffic: 3,
+	traffic: 2.5,
 };
 
 getQuantityElements = (heightElement) => {
 	return document.documentElement.clientHeight / heightElement + 1;
 };
+
+const getRandomEnemy = max => Math.floor(Math.random() * max + 1)
 
 const playAudio = (path) => {
 	audioTrack.pause();
@@ -51,7 +54,7 @@ const startGame = () => {
 		enemy.y = -100 * settings.traffic * (i + 1);
 		enemy.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - 50)) + 'px';
 		enemy.style.top = enemy.y + 'px';
-		enemy.style.background = 'transparent url(./images/enemy2.png) center / cover no-repeat';
+		enemy.style.background = `transparent url(./images/enemy${getRandomEnemy(MAX_ENEMY)}.png) center / cover no-repeat`;
 		gameArea.appendChild(enemy);
 	}
 
