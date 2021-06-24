@@ -1,4 +1,4 @@
-# NeedForJS — учебный проект Glo Academy - игра на JS 
+# NeedForJS — учебный проект - игра на JS 
 ## Проект выполнил: luksiko
 
 https://luksiko.github.io/NeedForJS/
