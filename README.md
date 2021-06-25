@@ -1,6 +1,7 @@
 # NeedForJS — учебный проект - игра на JS 
 ## Проект выполнил: luksiko
 
+
 https://luksiko.github.io/NeedForJS/
 
 В проекте используются: 
@@ -8,3 +9,5 @@ https://luksiko.github.io/NeedForJS/
 - CSS 
 - Javascript 
 - Normalize
+- Electron
+

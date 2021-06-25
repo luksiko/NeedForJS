@@ -4,8 +4,8 @@ const score = document.querySelector('.score');
 const speed = document.querySelector('.speed');
 const start = document.querySelector('.start');
 const gameArea = document.querySelector('.game_area');
-const car = document.createElement('div');
 const buttons = document.querySelectorAll('.button');
+const car = document.createElement('div');
 
 car.classList.add('car');
 let audioTrack = new Audio('');
@@ -104,17 +104,21 @@ const startGame = (event) => {
 const playGame = () => {
 	moveRoad();
 	moveEnemy();
+	let carSpeed = settings.speed * 10;
 	if (settings.start) {
-		settings.score += Math.floor(settings.speed);
-		score.innerHTML = 'ОЧКИ<br>' + settings.score;
-		speed.innerHTML = 'Скорость<br>' + Math.floor(settings.speed);
-
-		settings.score /5000
-
 		if (keys.ArrowLeft && settings.x > 0) settings.x -= settings.speed;
 		if (keys.ArrowRight && settings.x < (gameArea.offsetWidth - car.offsetWidth)) settings.x += settings.speed;
-		if (keys.ArrowUp && settings.y > 0) settings.y -= settings.speed;
-		if (keys.ArrowDown && settings.y < (gameArea.offsetHeight - car.offsetHeight)) settings.y += settings.speed;
+		if (keys.ArrowUp && settings.y > 0) {
+			settings.y -= settings.speed;
+			carSpeed = carSpeed + (settings.speed * 10);
+		}
+		if (keys.ArrowDown && settings.y < (gameArea.offsetHeight - car.offsetHeight)) {
+			settings.y += settings.speed;
+			carSpeed = carSpeed - (settings.speed * 10);
+		}
+		settings.score += Math.floor(settings.speed);
+		score.innerHTML = 'ОЧКИ<br>' + settings.score;
+		speed.innerHTML = 'Скорость<br>' + Math.floor(carSpeed) + ' км/ч.';
 		car.style.left = settings.x + 'px';
 		car.style.top = settings.y + 'px';
 		requestAnimationFrame(playGame);
